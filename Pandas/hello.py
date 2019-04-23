@@ -8,6 +8,7 @@ text = '서울1 IT코디센터'
 text_list = ['서울1 IT코디센터', '부산IT코디센터', '대구/경북IT코디센터']
 
 regex = re.compile(r'.*[^\s?IT코디센터$]')
+
 for text in text_list:
     match_obj = regex.search(text)
     print(match_obj)
