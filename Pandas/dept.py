@@ -2,11 +2,13 @@ import pandas as pd
 import xlrd
 import os
 
-path_to_file = os.path.join(os.path.expanduser("~"), "\\Data\\Douzone_20190416.xls")
+user_folder = os.path.expanduser("~")
+#path_to_file = os.path.join(user_folder, "\\Data\\Douzone_20190416.xls")
+path_to_file = user_folder + "\\Data\\Douzone_20190416.xls"
 if not os.path.exists(path_to_file):
     print("File not found!!")
 else : 
-    print(path_to_file)
+    print("excel file open: " + path_to_file)
 
 df = pd.read_excel(path_to_file, Sheet_name="Sheet1")
 
@@ -35,9 +37,10 @@ df2 = df1[df1['부서명'].apply(lambda x: isItCoordinator(x))]
 #df2 = df1[df1['부서명'].apply(lambda x: '더존비즈온>TS본부>서울1' in x)]
 #df2 = df1[df1['부서명'].str.match(r'.*>CLOUD사업본부>CLOUD사업부>*.*>(팀원|팀장|부서장)$')] #IT코디센터 팀명 발췌
 
-df2 = df1[df1['부서명'].str.match(r'.*>.*?IT코디센터>(센터장|팀원|팀장)$')] #IT코디센터 팀명 발췌
+#df2 = df1[df1['부서명'].str.match(r'.*>.*?IT코디센터>(센터장|팀원|팀장)$')] #IT코디센터 팀명 발췌
+df2 = df1[df1['부서명'].str.match(r'.*IT코디센터>(센터장|팀원|팀장)$')] #IT코디센터 팀명 발췌
 
-df2.loc[:, 'NEW_COL0'] = df2.loc[:, '부서명'].str.replace(r'.*?>TS본부>|.*?>IT코디센터>|(IT코디센터>(센터장|팀원|팀장)$)', '') # 가로와 가로안의 글자 제거 (이름)
+df2.loc[:, 'NEW_COL0'] = df2.loc[:, '부서명'].str.replace(r'(.*?>TS본부>)|(.*?>IT코디센터>)|(IT코디센터>(센터장|팀원|팀장)$)', '') # IT코디센터 이름만 추출하여 새컬럼에 반영
 
 '''for row in df2['사원명(ID)']:
     #print(df2[row])
