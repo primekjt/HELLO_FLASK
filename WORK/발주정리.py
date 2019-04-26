@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import re
 import datetime
+#import CommUtil
 
 def commaParse(num):
    return re.sub('(?<=\d)(?=(\d{3})+(?!\d))',',',str(num))
@@ -14,9 +15,9 @@ file_name = "order" + yesterday.strftime('%Y%m%d') + ".xlsx"
 #file_name ='order20190401to0419.xlsx'
 
 excel_file = DATA_PATH + file_name
-#excel_file = "C:\\Temp\\NsmData\order20190419.xlsx"
+excel_file = "C:\\Temp\\NsmData\order20190401to25.xlsx"
 
-excel_file = "C:\\Dev\\Data\Sheet1.xlsx"
+#excel_file = "C:\\Dev\\Data\Sheet1.xlsx"
 
 try:
     if not os.path.exists(excel_file):
