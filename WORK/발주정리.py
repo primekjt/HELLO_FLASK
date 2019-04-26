@@ -1,4 +1,4 @@
-import pandas as pd
+﻿import pandas as pd
 #import xlrd
 import os
 import re
@@ -54,6 +54,7 @@ grouped = df2.groupby(groupby_columns_list)
 df3 = grouped.sum().reset_index()
 
 # 업체명/솔루션/년금액/센터/담당자/판매유형
+"""
 regex = re.compile(r'.*[^\s?IT코디센터$]') # space와 IT코디센터가 아닌것을 선택
 price_sum = 0
 for row in df3.values:
@@ -66,17 +67,27 @@ for row in df3.values:
    price_sum += int(price) # 합계금액 
 
    print("{0}/{1}/년{2}원/{3}/{4}/{5}".format(row[3], row[4].split()[0], commaParse(row[8]), it_coodi, row[1], row[5]))
+"""
 
-comma_sum = commaParse(price_sum)
-print("총 금액 : {}원".format(comma_sum))
-
+# 업체명/솔루션/년금액/센터/담당자/판매유형
+price_sum = float()
+pattern = re.compile(r'(?<=\d)(?=(\d{3})+(?!\d))')
 for row in df3.values:
-   print("{0}/{1}/년{2}원/{3}/{4}/{5}".format(row[3], row[4].split()[0], commaParse(row[8]), row[0].split()[0], row[1], row[5]))
+    org_price = row[8] # 년금액
+    price_sum += org_price  # 합계금액
+    comma_price = str(org_price).split('.')[0]
+    comma_price = re.sub(pattern, ',', comma_price)
+    dept_name = row[0].replace('IT코디센터', '').rstrip().replace('/경북', '')
+    print("- {0}/{1}/년{2}원/{3}/{4}/{5}".format(row[3], row[4].split()[0], comma_price, dept_name, row[1], row[5]))
+
 
 # 결과 갯수 표시
 #count_row = df3.shape[0]  # gives number of row count   참고) len(df3)는 결과값이 같으나 느림
 #count_col = df3.shape[1]  # gives number of col count
-print('{0}개가 검색되었습니다.'.format(df3.shape[0]))
+#print('{0}개가 검색되었습니다.'.format(df3.shape[0]))
+
+comma_sum = re.sub(pattern, ',', str(price_sum).split('.')[0])
+print("총금액: {}원({}건)".format(comma_sum, df3.shape[0]))
 
 print('-'*50)
 # 업체명 (사업자번호)
