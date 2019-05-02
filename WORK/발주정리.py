@@ -15,7 +15,7 @@ file_name = "order" + yesterday.strftime('%Y%m%d') + ".xlsx"
 #file_name ='order20190401to0419.xlsx'
 
 excel_file = DATA_PATH + file_name
-excel_file = "C:\\Temp\\NsmData\order20190401to25.xlsx"
+excel_file = "C:\\Temp\\NsmData\order20190429.xlsx"
 
 #excel_file = "C:\\Dev\\Data\Sheet1.xlsx"
 
@@ -69,9 +69,12 @@ for row in df3.values:
    print("{0}/{1}/년{2}원/{3}/{4}/{5}".format(row[3], row[4].split()[0], commaParse(row[8]), it_coodi, row[1], row[5]))
 """
 
+df_save = pd.DataFrame()
+
+
 # 업체명/솔루션/년금액/센터/담당자/판매유형
 price_sum = float()
-pattern = re.compile(r'(?<=\d)(?=(\d{3})+(?!\d))')
+pattern = re.compile(r'(?<=\d)(?=(\d{3})+(?!\d))') # 천단위 콤마 넣기 위함
 for row in df3.values:
     org_price = row[8] # 년금액
     price_sum += org_price  # 합계금액
