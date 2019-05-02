@@ -6,7 +6,7 @@ from datetime import datetime
 
 def get_header_001(center_name, month):
     header = """
-[재계약 리스트] {0}IT코디센터 2019년 {1}월 재계약 리스트 전달 및 수주 등록 요청드립니다.
+[재계약 리스트] {0}IT코디센터 2019년 {1} 재계약 리스트 전달 및 수주 등록 요청드립니다.
 수신 : {0}IT코디센터 센터장님, 영업담당자
 참조 : CLOUD사업팀
 발신 : 김진태 부장
@@ -25,7 +25,7 @@ def get_header_001(center_name, month):
 감사합니다.
 
 -------------------- 아   래 ------------------
-[ 2019년 {1}월 재계약 리스트 ]
+[ 2019년 {1} 재계약 리스트 ]
 
 센터 | 상품 | 월,년 | 고객명 | 사업자번호 | 월금액 | 재계약금액 | 재계약월
     """.format(center_name, month)
@@ -40,6 +40,7 @@ def text_print_001(ws_rows):
         center_name = row[1].value
         month_price = re.sub(pattern, ',', str(row[6].value))
         year_price = re.sub(pattern, ',', str(row[7].value))
+        month = row[8].value
 
         # 첫줄은
         if center_name == '센터':
@@ -54,7 +55,7 @@ def text_print_001(ws_rows):
                 result_text += print_text + '\n'
                 # print(print_text)
             if pre_center_name != 'none':
-                print_text = get_header_001(center_name, '05')
+                print_text = get_header_001(center_name, month)
                 # print_text = '[ header ]' + '\n'  #debug
                 result_text += print_text + '\n'
                 # print(print_text)
