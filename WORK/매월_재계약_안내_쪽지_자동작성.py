@@ -1,7 +1,24 @@
 import pandas
 import openpyxl
 #import re #regex
+import os
 from datetime import datetime
+
+def input_file_path():
+    #cur_dir = os.getcwd()
+    #print('current directory : ' + cur_dir)
+    print('program exit : \'x\' press key or \'Enter\' key')
+    while True:
+        input_data = input('input source file path : ')
+        if input_data == 'x' or input_data == '':
+            break
+        else:
+            if os.path.exists(input_data):
+                #print(input_data)
+                return input_data
+            else:
+                print('file not found : ' + input_data)
+    return ''
 
 def get_header_001(center_name, month):
     header = """
@@ -86,8 +103,18 @@ def text_print_001(ws_rows):
 
     return result_text
 
-if __name__ == "__main__":
-    data_file_path = 'C:\\Users\\김진태\\Jupyter_Folder\\Data\\5월 재계약 업체 리스트_20190502.xlsx'
+def main():
+    print('{0}[{1:^21}]{2}'.format('=' * 20, '매월 재계약 안내 쪽지 자동작성', '=' * 20))
+    print('{:>72}'.format('2019.05.03 K.J.T'))
+    print('-'*76)
+
+    data_file_path = input_file_path()
+    if 0 >= len(data_file_path):
+        print('program exit... good-bye!')
+        exit()
+
+    # data_file_path = 'C:\\Users\\김진태\\Jupyter_Folder\\Data\\5월 재계약 업체 리스트_20190502.xlsx'
+
     wb = openpyxl.load_workbook(data_file_path)
 
     try:
@@ -98,7 +125,12 @@ if __name__ == "__main__":
 
         save_text = text_print_001(ws.rows)
         # print(save_text)
-        save_file_name = "C:\\Users\\김진태\\Jupyter_Folder\\Data\\재계약_쪽지_" + datetime.now().strftime('%Y%m%d') + ".txt"
+
+        #save_file_name = "C:\\Users\\김진태\\Jupyter_Folder\\Data\\재계약_쪽지_" + datetime.now().strftime('%Y%m%d') + ".txt"
+        start, ext = os.path.splitext(data_file_path)  # ('C:\\Users\\김진태\\Jupyter_Folder\\Data\\5월 재계약 업체 리스트_20190502', '.xlsx')
+        tail = '' + "_{:%Y%m%d%H%M%S}".format(datetime.now())  # '_20190503135732'
+        save_file_name = start + tail+ '.txt'
+
         with open(save_file_name, 'w') as f:
             f.write(save_text)
 
@@ -106,3 +138,9 @@ if __name__ == "__main__":
         print('Exception : %s' % e)
     finally:
         wb.close()
+
+    print('-' * 76)
+    print('create success! good-bye!')
+
+if __name__ == "__main__":
+    main()

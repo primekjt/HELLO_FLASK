@@ -33,6 +33,23 @@ def get_file_path():
                 print('file not found : ' + input_data)
     return ''
 
+def input_file_path():
+    cur_dir = os.getcwd()
+    print('current directory : ' + cur_dir)
+    print('program exit : \'x\' press key or \'Enter\' key')
+    while True:
+        input_data = input('input source file path : ')
+        if input_data == 'x' or input_data == '':
+            break
+        else:
+            if os.path.exists(input_data):
+                #print(input_data)
+                return input_data
+            else:
+                print('file not found : ' + input_data)
+    return ''
+
+
 def dept_info(file_path):
     import pandas as pd
     df = pd.read_excel(file_path, Sheet_name="Sheet1")
@@ -41,10 +58,10 @@ def dept_info(file_path):
 
     df2 = df1[df1['부서명'].str.match(r'.*IT코디센터>(센터장|팀원|팀장)$')] #IT코디센터 팀명 발췌
 
+if __name__ == '__main__':
+    file_path = get_file_path()
 
-file_path = get_file_path()
-
-if len(file_path) > 0:
-    print("OK : " + file_path)
-else:
-    print('exit')
+    if len(file_path) > 0:
+        print("OK : " + file_path)
+    else:
+        print('exit')
